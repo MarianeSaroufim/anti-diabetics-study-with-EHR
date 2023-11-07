@@ -6,7 +6,46 @@ from ths_diagnosis td ;
 #UPDATE testths_diagnosis
 # connected to database
 
-#Checking main diagnosis in tab_hospitalisation (no results)
+# Patients who have taken anti-diabetic drugs (ATC code like A10%)
+
+
+select unique DRUG_ATC_C07
+from tab_patient tp, tab_prescription tp2, tab_prs_drugs tpd, ths_drugs td 
+where tp.PAT_ID  = tp2.PAT_ID 
+and tp2.PRS_KEY = tpd.PRS_KEY
+and tpd.DRUG_CIP7 = td.DRUG_CIP7  
+and DRUG_ATC_C07 like 'A10%';
+
+
+select tp.PAT_ID, DRUG_ATC_C07, count(*) as count_per_patient
+from tab_patient tp, tab_prescription tp2, tab_prs_drugs tpd, ths_drugs td 
+where tp.PAT_ID  = tp2.PAT_ID 
+and tp2.PRS_KEY = tpd.PRS_KEY
+and tpd.DRUG_CIP7 = td.DRUG_CIP7  
+and DRUG_ATC_C07 like 'A10B%'
+group by tp.PAT_ID ;
+
+
+select tp.PAT_ID, DRUG_ATC_C07, count(*) as count_per_patient_and_drug
+from tab_patient tp, tab_prescription tp2, tab_prs_drugs tpd, ths_drugs td 
+where tp.PAT_ID  = tp2.PAT_ID 
+and tp2.PRS_KEY = tpd.PRS_KEY
+and tpd.DRUG_CIP7 = td.DRUG_CIP7  
+and DRUG_ATC_C07 like 'A10B%'
+group by tp.PAT_ID, DRUG_ATC_C07
+
+
+select tp.PAT_ID, DRUG_ATC_C07, count(*) as count_per_drug
+from tab_patient tp, tab_prescription tp2, tab_prs_drugs tpd, ths_drugs td 
+where tp.PAT_ID  = tp2.PAT_ID 
+and tp2.PRS_KEY = tpd.PRS_KEY
+and tpd.DRUG_CIP7 = td.DRUG_CIP7  
+and DRUG_ATC_C07 like 'A10B%'
+group by DRUG_ATC_C07
+# this not needed 
+
+
+#Checking main diagnosis in tab_hospitalisation (no results) need to check in ass diagnosis
 
 select unique HOSP_MAIN_DGN
 from tab_hospitalisation th  
